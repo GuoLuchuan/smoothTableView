@@ -16,6 +16,15 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    RootViewController *rootViewController = [[RootViewController alloc] init];
+    
+    rootViewController.title = @"smooth tableView";
+    
+    UINavigationController *rootNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+    
+    self.window.rootViewController = rootNavigationController;
+    
     return YES;
 }
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A17143FF16F0AB640097A757 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17143FE16F0AB640097A757 /* RootViewController.m */; };
+		A171440316F0B1550097A757 /* MyCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440216F0B1550097A757 /* MyCustomCell.m */; };
+		A171440616F0B1B20097A757 /* GLCImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440516F0B1B20097A757 /* GLCImageCache.m */; };
+		A171440916F0B2940097A757 /* ImageDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440816F0B2940097A757 /* ImageDownloadOperation.m */; };
 		BCE510B716EED0D10019AA06 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510B616EED0D10019AA06 /* UIKit.framework */; };
 		BCE510B916EED0D10019AA06 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510B816EED0D10019AA06 /* Foundation.framework */; };
 		BCE510BB16EED0D10019AA06 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510BA16EED0D10019AA06 /* CoreGraphics.framework */; };
@@ -19,6 +23,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A17143FD16F0AB640097A757 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		A17143FE16F0AB640097A757 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		A171440116F0B1550097A757 /* MyCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomCell.h; sourceTree = "<group>"; };
+		A171440216F0B1550097A757 /* MyCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomCell.m; sourceTree = "<group>"; };
+		A171440416F0B1B20097A757 /* GLCImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCImageCache.h; sourceTree = "<group>"; };
+		A171440516F0B1B20097A757 /* GLCImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCImageCache.m; sourceTree = "<group>"; };
+		A171440716F0B2940097A757 /* ImageDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownloadOperation.h; sourceTree = "<group>"; };
+		A171440816F0B2940097A757 /* ImageDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadOperation.m; sourceTree = "<group>"; };
 		BCE510B316EED0D10019AA06 /* SmoothTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmoothTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCE510B616EED0D10019AA06 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCE510B816EED0D10019AA06 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -81,6 +93,14 @@
 				BCE510C516EED0D10019AA06 /* AppDelegate.h */,
 				BCE510C616EED0D10019AA06 /* AppDelegate.m */,
 				BCE510BD16EED0D10019AA06 /* Supporting Files */,
+				A17143FD16F0AB640097A757 /* RootViewController.h */,
+				A17143FE16F0AB640097A757 /* RootViewController.m */,
+				A171440116F0B1550097A757 /* MyCustomCell.h */,
+				A171440216F0B1550097A757 /* MyCustomCell.m */,
+				A171440416F0B1B20097A757 /* GLCImageCache.h */,
+				A171440516F0B1B20097A757 /* GLCImageCache.m */,
+				A171440716F0B2940097A757 /* ImageDownloadOperation.h */,
+				A171440816F0B2940097A757 /* ImageDownloadOperation.m */,
 			);
 			path = SmoothTableView;
 			sourceTree = "<group>";
@@ -166,6 +186,10 @@
 			files = (
 				BCE510C316EED0D10019AA06 /* main.m in Sources */,
 				BCE510C716EED0D10019AA06 /* AppDelegate.m in Sources */,
+				A17143FF16F0AB640097A757 /* RootViewController.m in Sources */,
+				A171440316F0B1550097A757 /* MyCustomCell.m in Sources */,
+				A171440616F0B1B20097A757 /* GLCImageCache.m in Sources */,
+				A171440916F0B2940097A757 /* ImageDownloadOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +306,7 @@
 				BCE510D216EED0D10019AA06 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
