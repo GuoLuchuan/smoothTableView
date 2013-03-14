@@ -10,4 +10,6 @@
 
 @interface ImageDownloadOperation : NSOperation
 
+- (id)initWithImageURL:(NSURL *)imageURL target:(id)target action:(SEL)action;
+
 @end

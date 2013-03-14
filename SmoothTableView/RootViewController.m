@@ -10,6 +10,7 @@
 #import "MyCustomCell.h"
 #import "GLCImageCache.h"
 #import "ImageDownloadOperation.h"
+#import "BriefIntroductionViewController.h"
 
 #define CELLHEIGHT      60
 
@@ -17,6 +18,8 @@
 {
     UITableView *_tableView;
     NSMutableArray *_pictureList;
+    
+    NSOperationQueue *_operationQueue;
 }
 
 @end
@@ -34,6 +37,9 @@
         _tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         _tableView.dataSource = self;
         _tableView.delegate = self;
+        
+        _operationQueue = [[NSOperationQueue alloc] init];
+        [_operationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
         
         self.view.frame = [[UIScreen mainScreen] bounds];
         [self.view addSubview:_tableView];
@@ -53,17 +59,34 @@
 {
     [super viewDidAppear:animated];
     //TODO:download the picture name list
+    
+    
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)beginLoadData
+{
+    NSInvocationOperation *pictureListOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadPictureLists) object:nil];
+    [_operationQueue addOperation:pictureListOperation];
+}
+
+- (void)downloadPictureLists
+{
+    
 }
 
 #pragma mark -
@@ -101,6 +124,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return CELLHEIGHT;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"select : %d",indexPath.row);
+    
+    BriefIntroductionViewController *briefIntroduction = [[BriefIntroductionViewController alloc] init];
+    
+    [self.navigationController pushViewController:briefIntroduction animated:YES];
+    
 }
 
 #pragma mark -

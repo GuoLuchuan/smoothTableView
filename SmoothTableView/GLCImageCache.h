@@ -10,4 +10,6 @@
 
 @interface GLCImageCache : NSCache
 
++ (GLCImageCache *)sharedCache;
+
 @end
