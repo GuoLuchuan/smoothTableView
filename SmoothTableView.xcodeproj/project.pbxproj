@@ -14,7 +14,6 @@
 		A17143FF16F0AB640097A757 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A17143FE16F0AB640097A757 /* RootViewController.m */; };
 		A171440316F0B1550097A757 /* MyCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440216F0B1550097A757 /* MyCustomCell.m */; };
 		A171440616F0B1B20097A757 /* GLCImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440516F0B1B20097A757 /* GLCImageCache.m */; };
-		A171440916F0B2940097A757 /* ImageDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = A171440816F0B2940097A757 /* ImageDownloadOperation.m */; };
 		BCE510B716EED0D10019AA06 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510B616EED0D10019AA06 /* UIKit.framework */; };
 		BCE510B916EED0D10019AA06 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510B816EED0D10019AA06 /* Foundation.framework */; };
 		BCE510BB16EED0D10019AA06 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE510BA16EED0D10019AA06 /* CoreGraphics.framework */; };
@@ -25,6 +24,9 @@
 		BCE510CB16EED0D10019AA06 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCE510CA16EED0D10019AA06 /* Default@2x.png */; };
 		BCE510CD16EED0D10019AA06 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BCE510CC16EED0D10019AA06 /* Default-568h@2x.png */; };
 		BCF81A2016F1C95900F1324B /* BriefIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF81A1F16F1C95900F1324B /* BriefIntroductionViewController.m */; };
+		BCF81A3C16F6AD7F00F1324B /* GLCPathForDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF81A3B16F6AD7F00F1324B /* GLCPathForDirectory.m */; };
+		BCF81A3F16F6B02400F1324B /* defaultCover.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF81A3D16F6B02400F1324B /* defaultCover.png */; };
+		BCF81A4016F6B02400F1324B /* defaultCover@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCF81A3E16F6B02400F1324B /* defaultCover@2x.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,8 +45,6 @@
 		A171440216F0B1550097A757 /* MyCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomCell.m; sourceTree = "<group>"; };
 		A171440416F0B1B20097A757 /* GLCImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCImageCache.h; sourceTree = "<group>"; };
 		A171440516F0B1B20097A757 /* GLCImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCImageCache.m; sourceTree = "<group>"; };
-		A171440716F0B2940097A757 /* ImageDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageDownloadOperation.h; sourceTree = "<group>"; };
-		A171440816F0B2940097A757 /* ImageDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageDownloadOperation.m; sourceTree = "<group>"; };
 		BCE510B316EED0D10019AA06 /* SmoothTableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmoothTableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCE510B616EED0D10019AA06 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BCE510B816EED0D10019AA06 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -60,6 +60,10 @@
 		BCE510CC16EED0D10019AA06 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		BCF81A1E16F1C95900F1324B /* BriefIntroductionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BriefIntroductionViewController.h; sourceTree = "<group>"; };
 		BCF81A1F16F1C95900F1324B /* BriefIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BriefIntroductionViewController.m; sourceTree = "<group>"; };
+		BCF81A3A16F6AD7F00F1324B /* GLCPathForDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLCPathForDirectory.h; sourceTree = "<group>"; };
+		BCF81A3B16F6AD7F00F1324B /* GLCPathForDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCPathForDirectory.m; sourceTree = "<group>"; };
+		BCF81A3D16F6B02400F1324B /* defaultCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultCover.png; sourceTree = SOURCE_ROOT; };
+		BCF81A3E16F6B02400F1324B /* defaultCover@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "defaultCover@2x.jpg"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +128,8 @@
 			children = (
 				A171440416F0B1B20097A757 /* GLCImageCache.h */,
 				A171440516F0B1B20097A757 /* GLCImageCache.m */,
-				A171440716F0B2940097A757 /* ImageDownloadOperation.h */,
-				A171440816F0B2940097A757 /* ImageDownloadOperation.m */,
+				BCF81A3A16F6AD7F00F1324B /* GLCPathForDirectory.h */,
+				BCF81A3B16F6AD7F00F1324B /* GLCPathForDirectory.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -160,6 +164,8 @@
 		BCE510BC16EED0D10019AA06 /* SmoothTableView */ = {
 			isa = PBXGroup;
 			children = (
+				BCF81A3D16F6B02400F1324B /* defaultCover.png */,
+				BCF81A3E16F6B02400F1324B /* defaultCover@2x.jpg */,
 				A11D47C716F20CC3005DEA04 /* Utility */,
 				A11D47C616F20C7D005DEA04 /* Controller */,
 				A11D47C516F20C77005DEA04 /* View */,
@@ -241,6 +247,8 @@
 				BCE510C916EED0D10019AA06 /* Default.png in Resources */,
 				BCE510CB16EED0D10019AA06 /* Default@2x.png in Resources */,
 				BCE510CD16EED0D10019AA06 /* Default-568h@2x.png in Resources */,
+				BCF81A3F16F6B02400F1324B /* defaultCover.png in Resources */,
+				BCF81A4016F6B02400F1324B /* defaultCover@2x.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,12 +264,12 @@
 				A17143FF16F0AB640097A757 /* RootViewController.m in Sources */,
 				A171440316F0B1550097A757 /* MyCustomCell.m in Sources */,
 				A171440616F0B1B20097A757 /* GLCImageCache.m in Sources */,
-				A171440916F0B2940097A757 /* ImageDownloadOperation.m in Sources */,
 				BCF81A2016F1C95900F1324B /* BriefIntroductionViewController.m in Sources */,
 				A11D47BD16F206A2005DEA04 /* NSObject+SBJSON.m in Sources */,
 				A11D47BE16F206A2005DEA04 /* NSString+SBJSON.m in Sources */,
 				A11D47BF16F206A2005DEA04 /* SBJSON.m in Sources */,
 				A11D47C316F20B78005DEA04 /* PictureInfo.m in Sources */,
+				BCF81A3C16F6AD7F00F1324B /* GLCPathForDirectory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

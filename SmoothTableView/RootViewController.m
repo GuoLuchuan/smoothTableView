@@ -10,9 +10,9 @@
 #import "RootViewController.h"
 #import "MyCustomCell.h"
 #import "GLCImageCache.h"
-#import "ImageDownloadOperation.h"
 #import "BriefIntroductionViewController.h"
 #import "PictureInfo.h"
+#import "GLCPathForDirectory.h"
 
 #define CELLHEIGHT      60
 
@@ -23,8 +23,8 @@ static const NSInteger kNumberOfImages = 30;
 {
     UITableView *_tableView;
     NSMutableArray *_pictureList;
-    
-    NSOperationQueue *_operationQueue;
+        
+    GLCImageCache *_imageCache;
 }
 
 @end
@@ -43,8 +43,7 @@ static const NSInteger kNumberOfImages = 30;
         _tableView.dataSource = self;
         _tableView.delegate = self;
         
-        _operationQueue = [[NSOperationQueue alloc] init];
-        [_operationQueue setMaxConcurrentOperationCount:NSOperationQueueDefaultMaxConcurrentOperationCount];
+        _imageCache = [GLCImageCache sharedCache];
         
         self.view.frame = [[UIScreen mainScreen] bounds];
         [self.view addSubview:_tableView];
@@ -85,8 +84,11 @@ static const NSInteger kNumberOfImages = 30;
 
 - (void)beginLoadData
 {
-    NSInvocationOperation *pictureListOperation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(downloadPictureLists) object:nil];
-    [_operationQueue addOperation:pictureListOperation];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self downloadPictureLists];
+    });
+    
 }
 
 - (void)downloadPictureLists
@@ -99,7 +101,7 @@ static const NSInteger kNumberOfImages = 30;
     NSString *jsonString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil];
     NSDictionary *results = [jsonString JSONValue];
     
-    [self performSelectorOnMainThread:@selector(didFinishDownloadPictureLists:) withObject:results waitUntilDone:NO];
+    [self didFinishDownloadPictureLists:results];
 
 }
 
@@ -126,9 +128,60 @@ static const NSInteger kNumberOfImages = 30;
         
         [_pictureList addObject:pictureInfo];
     }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_tableView reloadData];
+        [_tableView flashScrollIndicators];
+    });
+
+}
+
+- (void)startPoctureDownload:(PictureInfo *)pictureInfo block:(void (^)(UIImage *))block
+{
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
-    [_tableView reloadData];
-    [_tableView flashScrollIndicators];
+        NSData *data = [NSData dataWithContentsOfURL:pictureInfo.imageURL];
+        UIImage *image = [UIImage imageWithData:data];
+        
+        //TODO handle the image
+        
+        NSData *imageData = UIImagePNGRepresentation(image);
+        [imageData writeToFile:[self coverPath:pictureInfo.pictureId] atomically:YES];
+        
+        [_imageCache setObject:image forKey:pictureInfo.pictureId];
+        
+        if (block) {
+            block(image);
+        }
+        
+    });
+
+}
+
+- (void)loadImagesForOnscreenRows
+{
+    if ([_pictureList count] > 0)
+    {
+        NSArray *visiblePaths = [_tableView indexPathsForVisibleRows];
+        for (NSIndexPath *indexPath in visiblePaths)
+        {
+            PictureInfo *pictureInfo = [_pictureList objectAtIndex:indexPath.row];
+            
+            if (![UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId]]) // avoid the app icon download if the app already has an icon
+            {
+                [self startPoctureDownload:pictureInfo block:^(UIImage *image) {
+                    
+                    ((MyCustomCell *)[_tableView cellForRowAtIndexPath:indexPath]).imageView.image = image;
+                    
+                }];
+            }
+        }
+    }
+}
+
+- (NSString *)coverPath:(id)pictureId
+{
+    return [[GLCPathForDirectory cachesDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",pictureId]];
 }
 
 #pragma mark -
@@ -142,16 +195,46 @@ static const NSInteger kNumberOfImages = 30;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"MyCustomCellIdentifier";
+    
+    PictureInfo *pictureInfo = [_pictureList objectAtIndex:indexPath.row];
+    
     MyCustomCell *myCustomCell = [tableView dequeueReusableCellWithIdentifier:identifier] ;
     if (myCustomCell == nil) {
         myCustomCell = [[MyCustomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
        
         //TODO:set up the cell base property
+                
+        [self startPoctureDownload:pictureInfo block:^(UIImage *__strong image){
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+            
+                myCustomCell.imageView.image = image;
+                
+            });
+            
+        }];
         
     }
     
     //TODO:set up the different cells different property
-    myCustomCell.textLabel.text = ((PictureInfo *)[_pictureList objectAtIndex:indexPath.row]).title;
+        
+    myCustomCell.textLabel.text = pictureInfo.title;
+    
+    UIImage *coverImage = [_imageCache objectForKey:pictureInfo.pictureId];
+    
+    if (coverImage == nil) {
+        coverImage = [UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId]];
+        if (coverImage) {
+            [_imageCache setObject:coverImage forKey:pictureInfo.pictureId];
+        }
+        else
+        {
+            coverImage = [UIImage imageNamed:@"defaultCover.png"];
+        }
+    }
+    
+    myCustomCell.imageView.image = coverImage;
+    
     return myCustomCell;
 }
 
@@ -181,13 +264,16 @@ static const NSInteger kNumberOfImages = 30;
 #pragma mark -
 #pragma mark UITableViewDelegate
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    //TODO:lazy load
+    if (!decelerate)
+	{
+        [self loadImagesForOnscreenRows];
+    }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    //TODO:lazy load
+    [self loadImagesForOnscreenRows];
 }
 @end
