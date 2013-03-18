@@ -10,4 +10,10 @@
 
 @interface MyCustomCell : UITableViewCell
 
+@property (nonatomic) UIImageView *customImageView;
+
+@property (nonatomic) NSString *titleString;
+
+@property (nonatomic) NSString *subTitleString;
+
 @end

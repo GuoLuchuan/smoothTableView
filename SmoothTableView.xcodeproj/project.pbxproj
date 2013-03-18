@@ -27,6 +27,7 @@
 		BCF81A3C16F6AD7F00F1324B /* GLCPathForDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = BCF81A3B16F6AD7F00F1324B /* GLCPathForDirectory.m */; };
 		BCF81A3F16F6B02400F1324B /* defaultCover.png in Resources */ = {isa = PBXBuildFile; fileRef = BCF81A3D16F6B02400F1324B /* defaultCover.png */; };
 		BCF81A4016F6B02400F1324B /* defaultCover@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BCF81A3E16F6B02400F1324B /* defaultCover@2x.jpg */; };
+		BCF81A4216F6E66800F1324B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCF81A4116F6E66800F1324B /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		BCF81A3B16F6AD7F00F1324B /* GLCPathForDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLCPathForDirectory.m; sourceTree = "<group>"; };
 		BCF81A3D16F6B02400F1324B /* defaultCover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = defaultCover.png; sourceTree = SOURCE_ROOT; };
 		BCF81A3E16F6B02400F1324B /* defaultCover@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "defaultCover@2x.jpg"; sourceTree = SOURCE_ROOT; };
+		BCF81A4116F6E66800F1324B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCF81A4216F6E66800F1324B /* QuartzCore.framework in Frameworks */,
 				BCE510B716EED0D10019AA06 /* UIKit.framework in Frameworks */,
 				BCE510B916EED0D10019AA06 /* Foundation.framework in Frameworks */,
 				BCE510BB16EED0D10019AA06 /* CoreGraphics.framework in Frameworks */,
@@ -137,6 +140,7 @@
 		BCE510AA16EED0D10019AA06 = {
 			isa = PBXGroup;
 			children = (
+				BCF81A4116F6E66800F1324B /* QuartzCore.framework */,
 				BCE510BC16EED0D10019AA06 /* SmoothTableView */,
 				BCE510B516EED0D10019AA06 /* Frameworks */,
 				BCE510B416EED0D10019AA06 /* Products */,

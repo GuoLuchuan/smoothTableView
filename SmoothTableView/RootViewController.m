@@ -14,7 +14,9 @@
 #import "PictureInfo.h"
 #import "GLCPathForDirectory.h"
 
-#define CELLHEIGHT      60
+#import <QuartzCore/QuartzCore.h>
+
+#define CELLHEIGHT      80
 
 static const NSString *kFlickrAPIKey = @"583366ad887b297494873eb1710fa739";
 static const NSInteger kNumberOfImages = 30;
@@ -79,6 +81,8 @@ static const NSInteger kNumberOfImages = 30;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
+    [_imageCache removeAllObjects];
 }
 
 
@@ -167,11 +171,17 @@ static const NSInteger kNumberOfImages = 30;
         {
             PictureInfo *pictureInfo = [_pictureList objectAtIndex:indexPath.row];
             
+            
+            
             if (![UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId]]) // avoid the app icon download if the app already has an icon
             {
                 [self startPoctureDownload:pictureInfo block:^(UIImage *image) {
                     
-                    ((MyCustomCell *)[_tableView cellForRowAtIndexPath:indexPath]).imageView.image = image;
+                    MyCustomCell *cell = (MyCustomCell *)[_tableView cellForRowAtIndexPath:indexPath];
+                    cell.customImageView.image = image;
+                    CATransition *transiton = [[CATransition alloc] init];
+                    transiton.duration = .5;
+                    [cell.layer addAnimation:transiton forKey:@"Animation"];
                     
                 }];
             }
@@ -208,7 +218,11 @@ static const NSInteger kNumberOfImages = 30;
             
             dispatch_async(dispatch_get_main_queue(), ^{
             
-                myCustomCell.imageView.image = image;
+                myCustomCell.customImageView.image = image;
+                CATransition *transition = [[CATransition alloc] init];
+                transition.duration = .5;
+                [myCustomCell.layer addAnimation:transition forKey:@"Animation"];
+                
                 
             });
             
@@ -218,7 +232,7 @@ static const NSInteger kNumberOfImages = 30;
     
     //TODO:set up the different cells different property
         
-    myCustomCell.textLabel.text = pictureInfo.title;
+    myCustomCell.titleString = pictureInfo.title;
     
     UIImage *coverImage = [_imageCache objectForKey:pictureInfo.pictureId];
     
@@ -233,7 +247,7 @@ static const NSInteger kNumberOfImages = 30;
         }
     }
     
-    myCustomCell.imageView.image = coverImage;
+    myCustomCell.customImageView.image = coverImage;
     
     return myCustomCell;
 }
