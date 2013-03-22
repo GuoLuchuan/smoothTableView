@@ -22,7 +22,7 @@
             
         }
 
-        _customImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 50, 80 - 10 - 10)];
+        _customImageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, CELL_IMAGE_WIDTH, CELL_IMAGE_HEIGHT)];
         [self addSubview:_customImageView];
 
     }

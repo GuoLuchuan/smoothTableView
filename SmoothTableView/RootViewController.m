@@ -14,9 +14,9 @@
 #import "PictureInfo.h"
 #import "GLCPathForDirectory.h"
 
-#import <QuartzCore/QuartzCore.h>
+#import "UIImage+Edit.h"
 
-#define CELLHEIGHT      80
+#import <QuartzCore/QuartzCore.h>
 
 static const NSString *kFlickrAPIKey = @"583366ad887b297494873eb1710fa739";
 static const NSInteger kNumberOfImages = 30;
@@ -27,6 +27,8 @@ static const NSInteger kNumberOfImages = 30;
     NSMutableArray *_pictureList;
         
     GLCImageCache *_imageCache;
+    
+    UIActivityIndicatorView *_indicatorView;
 }
 
 @end
@@ -47,8 +49,12 @@ static const NSInteger kNumberOfImages = 30;
         
         _imageCache = [GLCImageCache sharedCache];
         
+        _indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _indicatorView.frame = CGRectMake(0, 0, 40, 40);
+        _indicatorView.center = _tableView.center;
         self.view.frame = [[UIScreen mainScreen] bounds];
         [self.view addSubview:_tableView];
+        [self.view addSubview:_indicatorView];
         
     }
     return self;
@@ -65,26 +71,26 @@ static const NSInteger kNumberOfImages = 30;
 {
     [super viewDidAppear:animated];
     
-    
+    [_indicatorView startAnimating];
+    [self beginLoadData];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //TODO:show the indicator
-    [self beginLoadData];
-    
+
 }
+
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-    
     [_imageCache removeAllObjects];
 }
 
+#pragma mark -
+#pragma mark Download pictureInfo list
 
 - (void)beginLoadData
 {
@@ -133,11 +139,15 @@ static const NSInteger kNumberOfImages = 30;
         [_pictureList addObject:pictureInfo];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
+        [_indicatorView stopAnimating];
         [_tableView reloadData];
         [_tableView flashScrollIndicators];
     });
 
 }
+
+#pragma mark -
+#pragma mark Asychonsized and lazy load image
 
 - (void)startPoctureDownload:(PictureInfo *)pictureInfo block:(void (^)(UIImage *))block
 {
@@ -146,13 +156,12 @@ static const NSInteger kNumberOfImages = 30;
     
         NSData *data = [NSData dataWithContentsOfURL:pictureInfo.imageURL];
         UIImage *image = [UIImage imageWithData:data];
+        [image writeToFile:[self coverPath:pictureInfo.pictureId isThumbnail:NO] atomically:YES];
         
-        //TODO handle the image
+        UIImage *thumbnailImage = [image resizeToWidth:CELL_IMAGE_WIDTH height:CELL_IMAGE_HEIGHT];
+        [thumbnailImage writeToFile:[self coverPath:pictureInfo.pictureId isThumbnail:YES] atomically:YES];
         
-        NSData *imageData = UIImagePNGRepresentation(image);
-        [imageData writeToFile:[self coverPath:pictureInfo.pictureId] atomically:YES];
-        
-        [_imageCache setObject:image forKey:pictureInfo.pictureId];
+        [_imageCache setObject:thumbnailImage forKey:pictureInfo.pictureId];
         
         if (block) {
             block(image);
@@ -171,27 +180,61 @@ static const NSInteger kNumberOfImages = 30;
         {
             PictureInfo *pictureInfo = [_pictureList objectAtIndex:indexPath.row];
             
-            
-            
-            if (![UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId]]) // avoid the app icon download if the app already has an icon
+            // avoid the app icon download if the app already has an icon
+            if (![UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId isThumbnail:NO]])
             {
                 [self startPoctureDownload:pictureInfo block:^(UIImage *image) {
                     
                     MyCustomCell *cell = (MyCustomCell *)[_tableView cellForRowAtIndexPath:indexPath];
-                    cell.customImageView.image = image;
-                    CATransition *transiton = [[CATransition alloc] init];
-                    transiton.duration = .5;
-                    [cell.layer addAnimation:transiton forKey:@"Animation"];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.customImageView.image = image;
+                        CATransition *transiton = [[CATransition alloc] init];
+                        transiton.duration = .5;
+                        [cell.layer addAnimation:transiton forKey:@"Animation"];
+                    });
                     
                 }];
             }
+            else
+            {
+                // means the cover.png is exist , but the thumbnail not exist
+                if (![UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId isThumbnail:YES]]) {
+                    UIImage *image = [UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId isThumbnail:NO]];
+                    UIImage *thumbnailImage = [image resizeToWidth:CELL_IMAGE_WIDTH height:CELL_IMAGE_HEIGHT];
+                    [thumbnailImage writeToFile:[self coverPath:pictureInfo.pictureId isThumbnail:YES] atomically:YES];
+                    
+                    [_imageCache setObject:thumbnailImage forKey:pictureInfo.pictureId];
+                    
+                    MyCustomCell *cell = (MyCustomCell *)[_tableView cellForRowAtIndexPath:indexPath];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.customImageView.image = image;
+                        CATransition *transiton = [[CATransition alloc] init];
+                        transiton.duration = .5;
+                        [cell.layer addAnimation:transiton forKey:@"Animation"];
+                    });
+
+                }
+            }
+            
+            
         }
     }
 }
 
-- (NSString *)coverPath:(id)pictureId
+- (NSString *)coverPath:(id)pictureId isThumbnail:(BOOL)isThumbnail
 {
-    return [[GLCPathForDirectory cachesDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",pictureId]];
+    NSString *pictureName;
+    
+    if (isThumbnail) {
+        pictureName = [NSString stringWithFormat:@"%@_thumbnail",pictureId];
+    }
+    else
+    {
+        pictureName = [NSString stringWithFormat:@"%@",pictureId];
+    }
+    
+    return [[GLCPathForDirectory cachesDirectory] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.png",pictureName]];
 }
 
 #pragma mark -
@@ -212,8 +255,7 @@ static const NSInteger kNumberOfImages = 30;
     if (myCustomCell == nil) {
         myCustomCell = [[MyCustomCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
        
-        //TODO:set up the cell base property
-                
+        
         [self startPoctureDownload:pictureInfo block:^(UIImage *__strong image){
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -229,15 +271,13 @@ static const NSInteger kNumberOfImages = 30;
         }];
         
     }
-    
-    //TODO:set up the different cells different property
-        
+            
     myCustomCell.titleString = pictureInfo.title;
     
     UIImage *coverImage = [_imageCache objectForKey:pictureInfo.pictureId];
     
     if (coverImage == nil) {
-        coverImage = [UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId]];
+        coverImage = [UIImage imageWithContentsOfFile:[self coverPath:pictureInfo.pictureId isThumbnail:YES]];
         if (coverImage) {
             [_imageCache setObject:coverImage forKey:pictureInfo.pictureId];
         }
@@ -262,7 +302,7 @@ static const NSInteger kNumberOfImages = 30;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CELLHEIGHT;
+    return CELL_HEIGHT;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
